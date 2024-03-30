@@ -55,7 +55,9 @@ bool ReadJpeg(lazyimg::Mat* output, FILE* fie_ptr)
 	return true;
 }
 
+#ifndef READ_ONLY
 bool WriteJpeg(lazyimg::Mat img, const char* path, uint32_t quality)
 {
 	return true;
 }
+#endif //READ_ONLY IS END

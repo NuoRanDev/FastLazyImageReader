@@ -33,6 +33,7 @@ bool ReadImg(lazyimg::Mat* dst, std::string& path)
 	return state;
 }
 
+#ifndef READ_ONLY
 bool WriteImg(lazyimg::Mat& src, std::string& path, uint32_t quality)
 {
 	bool state = true;
@@ -52,3 +53,4 @@ bool WriteImg(lazyimg::Mat& src, std::string& path, uint32_t quality)
 #endif // ADD_TIFF_MODULES
 	return state;
 }
+#endif // READ_ONLY IS END

@@ -1,6 +1,10 @@
 ﻿#include "LazyWindow.h"
+
+#ifndef NOT_ADD_WINDOW_SHOW_MODULES
+
 #include "SDL2/SDL.h"
 #include "LazyImgConfig.h"
+
 
 static int is_sdl_init = 0;
 
@@ -91,3 +95,5 @@ bool ImgShow(std::string window_name, lazyimg::Mat* mat, int width, int height)
 	SDL_DestroyRenderer(ren);
 	return true;
 }
+
+#endif // NOT_ADD_WINDOW_SHOW_MODULES IS END

@@ -1,24 +1,12 @@
-import sys
-import os
 
-ImgReaderCore = {"src" : "./../ImgReaderCore/src/", "inc" : "./../ImgReaderCore/inc/"}
-_3rd_lib_re = "-shared -fPIC -L./windowslib/re/ -llibpng16.lib -llzma.lib -lmimalloc-static.lib -lSDL2-static.lib -ltiff.lib -lturbojpeg.lib -lzlib.lib"
 
-def build(Project:dict[str:str],de_or_re:str):
-    clang_pro_cmmand = "clang -std=c++17 -o3 -I ./../3rd -I {0} -c {1} -o {2}{3}.obj"
-    for define in sys.argv:
-        print(define)
-    
-    obj_file = ""
-    for c_file in os.listdir(Project.get("src")):
-        print("# {0}".format(c_file))
-        obj_file = obj_file + "./obj/" + c_file.replace(".cpp","") + "{0}.obj ".format(de_or_re)
+#re
+#/permissive- /ifcOutput "x64\Release\" /GS /GL /W3 /Gy /Zc:wchar_t /I"C:\Users\Wunuo\Desktop\ImgReader\windows\..\ImgReaderCore\inc" /I"C:\Users\Wunuo\Desktop\ImgReader\windows\..\3rd" /Zi /Gm- /O2 /sdl /Fd"x64\Release\vc143.pdb" /Zc:inline /fp:precise /D "NDEBUG" /D "IMGREADER_EXPORTS" /D "_WINDOWS" /D "_USRDLL" /D "_WINDLL" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /std:c17 /Gd /Oi /MD /std:c++20 /FC /Fa"x64\Release\" /EHsc /nologo /Fo"x64\Release\" /Fp"x64\Release\ImgReaderCore.pch" /diagnostics:column /utf-8
 
-        os.system(clang_pro_cmmand.format(Project.get("inc"), Project.get("src") + c_file , "./obj/" + c_file.replace(".cpp",""),de_or_re))
+#/OUT:"C:\Users\Wunuo\Desktop\ImgReader\windows\x64Release\ImgReaderCore.dll" /MANIFEST /LTCG:incremental /NXCOMPAT /PDB:"C:\Users\Wunuo\Desktop\ImgReader\windows\x64Release\ImgReaderCore.pdb" /DYNAMICBASE "winmm.lib" "version.lib" "Imm32.lib" "Setupapi.lib" "libpng16.lib" "lzma.lib" "mimalloc-static.lib" "SDL2-static.lib" "tiff.lib" "turbojpeg.lib" "zlib.lib" "kernel32.lib" "user32.lib" "gdi32.lib" "winspool.lib" "comdlg32.lib" "advapi32.lib" "shell32.lib" "ole32.lib" "oleaut32.lib" "uuid.lib" "odbc32.lib" "odbccp32.lib" /IMPLIB:"C:\Users\Wunuo\Desktop\ImgReader\windows\x64Release\ImgReaderCore.lib" /DEBUG /DLL /MACHINE:X64 /OPT:REF /PGD:"C:\Users\Wunuo\Desktop\ImgReader\windows\x64Release\ImgReaderCore.pgd" /SUBSYSTEM:CONSOLE /MANIFESTUAC:NO /ManifestFile:"x64\Release\ImgReaderCore.dll.intermediate.manifest" /LTCGOUT:"x64\Release\ImgReaderCore.iobj" /OPT:ICF /ERRORREPORT:PROMPT /ILK:"x64\Release\ImgReaderCore.ilk" /NOLOGO /LIBPATH:"C:\Users\Wunuo\Desktop\ImgReader\windows\windowslib\re" /TLBID:1 
 
-    os.system("clang -std=c++17 -o3 -I ./../3rd -I {0} {1} {2} -o ./re/ImgReaderCore.dll".format(Project.get("inc"),_3rd_lib_re,obj_file))
 
-def main():
-    build(ImgReaderCore,"re")
+#de 
+#/JMC /permissive- /ifcOutput "x64\Debug\" /GS /W3 /Zc:wchar_t /I"C:\Users\Wunuo\Desktop\ImgReader\windows\..\ImgReaderCore\inc" /I"C:\Users\Wunuo\Desktop\ImgReader\windows\..\3rd" /ZI /Gm- /Od /sdl /Fd"x64\Debug\vc143.pdb" /Zc:inline /fp:precise /D "_DEBUG" /D "IMGREADER_EXPORTS" /D "_WINDOWS" /D "_USRDLL" /D "_WINDLL" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /RTC1 /std:c17 /Gd /MDd /std:c++20 /FC /Fa"x64\Debug\" /EHsc /nologo /Fo"x64\Debug\" /Fp"x64\Debug\ImgReaderCore.pch" /diagnostics:column /utf-8
 
-main()
+#/OUT:"C:\Users\Wunuo\Desktop\ImgReader\windows\x64Debug\ImgReaderCore.dll" /MANIFEST /NXCOMPAT /PDB:"C:\Users\Wunuo\Desktop\ImgReader\windows\x64Debug\ImgReaderCore.pdb" /DYNAMICBASE "winmm.lib" "version.lib" "Imm32.lib" "Setupapi.lib" "libpng16d.lib" "lzma.lib" "mimalloc-static-debug.lib" "SDL2-staticd.lib" "tiffd.lib" "turbojpeg.lib" "zlibd.lib" "kernel32.lib" "user32.lib" "gdi32.lib" "winspool.lib" "comdlg32.lib" "advapi32.lib" "shell32.lib" "ole32.lib" "oleaut32.lib" "uuid.lib" "odbc32.lib" "odbccp32.lib" /IMPLIB:"C:\Users\Wunuo\Desktop\ImgReader\windows\x64Debug\ImgReaderCore.lib" /DEBUG /DLL /MACHINE:X64 /INCREMENTAL /PGD:"C:\Users\Wunuo\Desktop\ImgReader\windows\x64Debug\ImgReaderCore.pgd" /SUBSYSTEM:CONSOLE /MANIFESTUAC:NO /ManifestFile:"x64\Debug\ImgReaderCore.dll.intermediate.manifest" /LTCGOUT:"x64\Debug\ImgReaderCore.iobj" /ERRORREPORT:PROMPT /ILK:"x64\Debug\ImgReaderCore.ilk" /NOLOGO /LIBPATH:"C:\Users\Wunuo\Desktop\ImgReader\windows\windowslib\de\" /TLBID:1 

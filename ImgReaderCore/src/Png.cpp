@@ -124,7 +124,9 @@ bool ReadPng(lazyimg::Mat* output, FILE* fie_ptr)
 	return true;
 }
 
+#ifndef READ_ONLY
 bool WritePng(lazyimg::Mat img, const char* path)
 {
 	return false;
 }
+#endif //READ_ONLY IS END

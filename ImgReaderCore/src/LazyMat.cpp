@@ -66,7 +66,6 @@ namespace lazyimg
 
 	Mat::Mat(byte type, uint32_t w, uint32_t h) :ppix_data(0)
 	{
-		Release();
 		GengralInit(type);
 		x = w, y = h;
 		_this_mat_size = (size_t)x * y * channel * bit_depth;
@@ -86,7 +85,6 @@ namespace lazyimg
 
 	Mat::Mat(byte type, uint32_t w, uint32_t h, const void* i_pdata) :ppix_data(0)
 	{
-		Release();
 		GengralInit(type);
 		x = w, h = y;
 
@@ -173,6 +171,33 @@ namespace lazyimg
 		// copy data
 		memcpy(ppix_data, i_pdata, _this_mat_size);
 		FindStartPtr();
+	}
+
+	void Mat::Create(byte i_channel, byte i_bit_depth, uint32_t w, uint32_t h, const void* i_pdata)
+	{
+		CreateNotInitEmpty(i_channel, i_bit_depth, w, h);
+		memcpy(ppix_data, i_pdata, _this_mat_size);
+	}
+
+	void Mat::CreateNotInitEmpty(byte i_channel, byte i_bit_depth, uint32_t w, uint32_t h)
+	{
+		Release();
+		x = w;
+		y = h;
+		channel = i_channel;
+		bit_depth = i_bit_depth;
+		_this_mat_size = (size_t)w * h * i_channel * i_bit_depth;
+		// alloc data
+	ALLOC_PIX_DATA:
+		ppix_data = (byte*)mi_malloc(_this_mat_size);
+		if (ppix_data == nullptr)goto ALLOC_PIX_DATA;
+		FindStartPtr();
+	}
+
+	void Mat::CloneTo(Mat* dst)
+	{
+		dst->Create(channel, bit_depth, x, y, ppix_data);
+		dst->color_type = color_type;
 	}
 
 	Mat::~Mat()

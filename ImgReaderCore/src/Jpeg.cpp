@@ -1,14 +1,15 @@
 ﻿#include "LazyImgType.h"
 #include <jpeglib.h>
+#include "LazyCore.h"
 
-bool ReadJpeg(lazyimg::Mat* output, FILE* fie_ptr)
+bool ReadJpeg(lazyimg::Mat* output, FILE* file_ptr)
 {
 	jpeg_decompress_struct cinfo;
 	jpeg_error_mgr jerr;
 	cinfo.err = jpeg_std_error(&jerr);
 	jpeg_create_decompress(&cinfo);
 
-	jpeg_stdio_src(&cinfo, fie_ptr);
+	jpeg_stdio_src(&cinfo, file_ptr);
 	//read header
 	jpeg_read_header(&cinfo, true);
 	//start decompress
@@ -39,14 +40,10 @@ bool ReadJpeg(lazyimg::Mat* output, FILE* fie_ptr)
 		return false;
 	}
 
-	JSAMPROW buffer[1] = { 0 };
-	buffer[0] = output->at<lazyimg::byte>();
-
 	// get pixel lines
 	while (cinfo.output_scanline < cinfo.output_height)
 	{
-		buffer[0] = buffer[0] + stride;
-		jpeg_read_scanlines(&cinfo, buffer, 1);
+		jpeg_read_scanlines(&cinfo, output->GetLineStartPtr<lazyimg::byte>(cinfo.output_scanline), 1);
 	}
 
 	//finnished
@@ -56,8 +53,60 @@ bool ReadJpeg(lazyimg::Mat* output, FILE* fie_ptr)
 }
 
 #ifndef READ_ONLY
-bool WriteJpeg(lazyimg::Mat img, const char* path, uint32_t quality)
+#include "LazyToolFunction.h"
+bool WriteJpeg(lazyimg::Mat* img, const char* path, uint32_t quality)
 {
+	FILE* file_ptr;
+	// OPEN FILE
+	file_ptr = fopen(path, "wb");
+	if (file_ptr == nullptr)
+	{
+		printf("CAN'T WRITE FILE");
+		return false;
+	}
+	jpeg_compress_struct cinfo;
+	jpeg_error_mgr jerr;
+	cinfo.err = jpeg_std_error(&jerr);
+
+	// create compress
+	jpeg_create_compress(&cinfo);
+	jpeg_stdio_dest(&cinfo, file_ptr);
+
+	cinfo.image_height = img->y;
+	cinfo.image_width = img->x;
+	// save RGB
+	switch (img->color_type)
+	{
+	case pformat::U8_RGBA:
+#if defined(USE_CUDA)
+		lazyimg::IMGRGBA2RGB(img, img, ExternDeviceSetting);
+#else
+		lazyimg::IMGRGBA2RGB(img, img);
+#endif
+		break;
+	case pformat::U8_RGB:
+		break;
+	default:
+		goto FREE;
+	}
+	cinfo.input_components = 3;
+	cinfo.in_color_space = JCS_RGB;
+
+	jpeg_set_defaults(&cinfo);
+
+	// start compress
+	jpeg_start_compress(&cinfo, true);
+
+	while (cinfo.next_scanline < cinfo.image_height) {
+		jpeg_write_scanlines(&cinfo, img->GetLineStartPtr<lazyimg::byte>(cinfo.next_scanline), 1);
+	}
+	jpeg_finish_compress(&cinfo);
+
+	FREE:
+	// free
+	jpeg_destroy_compress(&cinfo);
+	fclose(file_ptr);
+
 	return true;
 }
 #endif //READ_ONLY IS END

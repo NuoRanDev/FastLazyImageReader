@@ -34,23 +34,25 @@ bool ReadImg(lazyimg::Mat* dst, std::string& path)
 }
 
 #ifndef READ_ONLY
-bool WriteImg(lazyimg::Mat& src, std::string& path, uint32_t quality)
+bool WriteImg(lazyimg::Mat* src, std::string& path, uint32_t quality)
 {
 	bool state = true;
 	if (path.find(".jpg") != std::string::npos || path.find(".jpeg") != std::string::npos)
 	{
 		state = WriteJpeg(src, path.c_str());
+		return state;
 	}
 	if (path.find(".png") != std::string::npos)
 	{
 		state = WritePng(src, path.c_str());
+		return state;
 	}
 #ifdef ADD_TIFF_MODULES
 	if (path.find(".tif") != std::string::npos || path.find(".tiff") != std::string::npos)
 	{
 		state = WriteTiff(src, path.c_str());
+		return state;
 	}
 #endif // ADD_TIFF_MODULES
-	return state;
 }
 #endif // READ_ONLY IS END

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{f81c26c7-f89d-4b67-b410-ea02b49db461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="srcource">
+      <UniqueIdentifier>{c158b45e-f9d6-4343-adcc-e83c6e622bc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cuda">
+      <UniqueIdentifier>{daab960b-6428-4cec-8648-5d2a4cea0ba8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\CudaMatCroe\inc\LazyImgCudaModConfig.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CudaMatCroe\inc\LazyGMat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="..\CudaMatCroe\cuda\Colorkernel.cu">
+      <Filter>cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\CudaMatCroe\cuda\Colorkernel.cuh">
+      <Filter>cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="..\CudaMatCroe\inc\Kernel.hpp">
+      <Filter>cuda</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\CudaMatCroe\src\LazyGMat.cpp">
+      <Filter>srcource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CudaMatCroe\src\initGpu.cpp">
+      <Filter>srcource</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

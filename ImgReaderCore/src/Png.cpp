@@ -1,9 +1,10 @@
 ﻿#include "LazyImgio.h"
+#include "LazyToolFunction.h"
 #include <png.h>
 
 constexpr auto PNG_BYTES_TO_CHECK = 4;
 
-bool ReadPng(lazyimg::Mat* output, FILE* fie_ptr)
+bool ReadPng(lazyimg::Mat* output, FILE* file_ptr)
 {
 	png_structp png_ptr = nullptr;
 	png_infop info_ptr = nullptr;
@@ -31,7 +32,7 @@ bool ReadPng(lazyimg::Mat* output, FILE* fie_ptr)
 	}
 
 #ifndef NOT_USE_C_STD_STREAM
-	png_init_io(png_ptr, fie_ptr);
+	png_init_io(png_ptr, file_ptr);
 #else
 	// 后期添加内存映射和网络流
 	png_set_read_fn(png_ptr, (void*)user_io_ptr, user_read_fn);
@@ -114,18 +115,18 @@ bool ReadPng(lazyimg::Mat* output, FILE* fie_ptr)
 			return false;
 		}
 	default:
-		fclose(fie_ptr);
 		png_destroy_read_struct(&png_ptr, &info_ptr, 0);
 		printf("Can\'t support this format\n");
 		return false;
 	}
-	png_read_image(png_ptr, output->GetLineStart<uint8_t>());
+	png_read_image(png_ptr, output->AllGetLineStartPtr<uint8_t>());
 	png_destroy_read_struct(&png_ptr, &info_ptr, 0);
+	lazyimg::BigTurnLittleEndian_8Bit(output);
 	return true;
 }
 
-#ifndef READ_ONLY
-bool WritePng(lazyimg::Mat img, const char* path)
+#if READ_ONLY
+bool WritePng(lazyimg::Mat *img, const char* path)
 {
 	return false;
 }

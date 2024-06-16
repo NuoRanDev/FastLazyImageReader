@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="srcource">
+      <UniqueIdentifier>{b2f905c4-2ce4-4e94-b6d7-711af1bc8fb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{17764400-17d2-45c3-ba46-0a69c681d9b5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\LazyImgTool\src\LazyToolFunction.cpp">
+      <Filter>srcource</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\LazyImgTool\inc\LazyToolFunction.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\LazyImgTool\inc\LazyToolBox.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

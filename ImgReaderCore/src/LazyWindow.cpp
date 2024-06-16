@@ -12,22 +12,22 @@ bool ImgShow(std::string window_name, lazyimg::Mat* mat, int width, int height)
 {
 	if (is_sdl_init == 0)
 	{
-		//SDL_初始化
+		// Init SDL
 		is_sdl_init = SDL_Init(SDL_INIT_VIDEO);
 		if (is_sdl_init == -1)
 		{
-			printf("初始化SDL失败!\n");
+			printf("Init SDL Falided!\n");
 			return false;
 		}
 	}
 
-	//创建窗口
+	// Create Window
 
 	SDL_Window* win = SDL_CreateWindow(window_name.c_str(),
 		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
-	//创建渲染器
+	// Create Render
 
 	SDL_Renderer* ren = SDL_CreateRenderer(win, -1, 0);
 
@@ -43,54 +43,54 @@ bool ImgShow(std::string window_name, lazyimg::Mat* mat, int width, int height)
 	case pformat::U8_RGB:
 		pixformat = SDL_PIXELFORMAT_RGB24;
 		break;
-	case pformat::U8_RGBA:
+	case pformat::U8_ABGR:
 		pixformat = SDL_PIXELFORMAT_ABGR8888;
+		break;
+	case pformat::U8_RGBA:
+		pixformat = SDL_PIXELFORMAT_RGBA8888;
 		break;
 	default:
 		SDL_DestroyRenderer(ren);
 		return false;
 	}
 
-	//创建材质
+	// Create Texture
 
 	SDL_Texture* tex = nullptr;
 	tex = SDL_CreateTexture(ren, pixformat, SDL_TEXTUREACCESS_STREAMING, mat->x, mat->y);
 
-	//清空渲染器
+	//clear
 	SDL_RenderClear(ren);
 
-	//退出
+	// exit number
 	int quit = 0;
 
-	//监听退出活动
 	SDL_Event event;
 
-	//将材质复制到渲染器
 	int stride = (int)mat->x * mat->channel * mat->bit_depth;
 	SDL_UpdateTexture(tex, nullptr, mat->at<uint8_t>(), stride);
 
 	SDL_Rect rect = { .x = 0,.y = 0, .w = width,.h = height };
 
-	// 将更新后的纹理拷贝到渲染器
+	// ReSize IMG Texture
 	SDL_RenderCopy(ren, tex, nullptr, &rect);
 
-	// 渲染器显示画面
+	// Show
 	SDL_RenderPresent(ren);
 
 	while (!quit)
 	{
-		//主消息循环
 		SDL_WaitEvent(&event);
 		switch (event.type)
 		{
-			//用户从菜单要求退出程序
+			// EXIT COMMAND
 		case SDL_QUIT:
 			quit = 1;
 			break;
 		}
 	}
 
-	//清理资源
+	// Release
 	SDL_DestroyTexture(tex);
 	SDL_DestroyRenderer(ren);
 	return true;

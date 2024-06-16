@@ -58,6 +58,10 @@ namespace lazyimg
 		inline void FindStartPtr();
 
 	public:
+		size_t DataSize()
+		{
+			return _this_mat_size;
+		}
 
 		// default init
 		Mat() = default;
@@ -84,6 +88,15 @@ namespace lazyimg
 		// ptr to Mat
 		void Create(byte type, uint32_t w, uint32_t h, const void* i_pdata);
 
+		// prt and size Mat
+		void Create(byte i_channel, byte i_bit_depth, uint32_t w, uint32_t h, const void* i_pdata);
+
+		// create empty no inited mat
+		void CreateNotInitEmpty(byte i_channel, byte i_bit_depth, uint32_t w, uint32_t h);
+
+		// clone data to new mat
+		void CloneTo(Mat* dst);
+
 		// Get image data start pionter
 		template <typename T> T* at()
 		{
@@ -104,10 +117,22 @@ namespace lazyimg
 			return (T*)output;
 		}
 
-		// get line
-		template<typename T> T** GetLineStart()
+		// get all line
+		template<typename T> T** AllGetLineStartPtr()
 		{
 			return (T**) start_line_ptr;
+		}
+
+		template<typename T> T** GetLineStartPtr(uint32_t offset)
+		{
+			T** output = (T**)start_line_ptr;
+			return output + offset;
+		}
+
+		template<typename T> T* GetLineStartPixel(uint32_t offset)
+		{
+			T** output = (T**)start_line_ptr;
+			return output[offset];
 		}
 
 		// Destory

@@ -9,6 +9,11 @@
 #include <string>
 #include <vector>
 
+#if (defined(READ_ONLY)) && (!defined(NOT_NEED_COLOR_TOOLS))
+#define NOT_NEED_COLOR_TOOLS
+#endif // READ_ONLY
+
+
 #ifdef _WIN32
 #pragma warning(disable : 4996)
 #endif // _WIN32

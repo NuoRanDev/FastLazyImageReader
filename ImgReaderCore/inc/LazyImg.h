@@ -30,8 +30,8 @@
 *   #define    READ_ONLY                             /
 *===================================================*/
 
-#ifdef _DEBUG
+#ifndef NOT_ADD_WINDOW_SHOW_MODULES
 #include "LazyWindow.h"
-#endif // _DEBUG
+#endif // NOT_ADD_WINDOW_SHOW_MODULES
 
 #endif // _INC_LAZY_IMG_READER_H_ IS EOF
